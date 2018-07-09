@@ -5,7 +5,7 @@ import {
   getAndRemoveAttr,
   getBindingAttr,
   baseWarn
-} from './../../helpers'
+} from '../../../helpers'
 
 function transformNode (el: ASTElement, options: CompilerOptions) {
   const warn = options.warn || baseWarn

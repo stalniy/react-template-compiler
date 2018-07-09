@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "syntax-flow",
+    "transform-flow-strip-types",
+    "external-helpers"
+  ],
+  "presets": [
+    ["env", {
+      "modules": false,
+      "loose": true,
+      "browsers": ["last 2 versions", "safari >= 7"]
+    }]
+  ]
+}

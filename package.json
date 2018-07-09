@@ -2,9 +2,15 @@
   "name": "react-template-compiler",
   "version": "0.0.1",
   "description": "Compile Vue templates into React render function",
-  "main": "dist/index.umd.js",
+  "main": "dist/index.cjs.js",
+  "es2015": "dist/index.es.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build.es": "rollup -c ./tools/rollup.es.js",
+    "build.cjs": "rollup -c ./tools/rollup.cjs.js",
+    "build.web.es": "npm run build.es -- -i src/platforms/web/index.js -o dist/web.es.js",
+    "build.web.cjs": "npm run build.cjs -- -i src/platforms/web/index.js -o dist/web.cjs.js",
+    "build": "npm run build.es && npm run build.cjs && npm run build.web.es && npm run build.web.cjs",
+    "test": "NODE_ENV=test jest --config ./tools/jest.config.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +31,24 @@
   "homepage": "https://github.com/stalniy/react-template-compiler#readme",
   "dependencies": {
     "he": "^1.1.1"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^2.1.1",
+    "@semantic-release/git": "^6.0.1",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.2.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "flow-bin": "^0.76.0",
+    "jest": "^23.3.0",
+    "rollup": "^0.62.0",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-flow-no-whitespace": "^1.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^4.0.0",
+    "semantic-release": "^15.6.3"
   }
 }

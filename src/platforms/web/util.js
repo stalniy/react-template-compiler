@@ -163,3 +163,14 @@ export function isUnknownElement (tag: string): boolean {
 }
 
 export const isTextInputType = makeMap('text,number,password,search,email,tel,url')
+
+// attributes that should be using props for binding
+const acceptValue = makeMap('input,textarea,option,select,progress')
+export const mustUseProp = (tag: string, type: ?string, attr: string): boolean => {
+  return (
+    (attr === 'value' && acceptValue(tag)) && type !== 'button' ||
+    (attr === 'selected' && tag === 'option') ||
+    (attr === 'checked' && tag === 'input') ||
+    (attr === 'muted' && tag === 'video')
+  )
+}

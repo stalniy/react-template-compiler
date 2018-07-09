@@ -4,13 +4,14 @@ import {
   isPreTag,
   mustUseProp,
   isReservedTag,
-  getTagNamespace
-} from '../../util'
+  getTagNamespace,
+  isUnaryTag,
+  canBeLeftOpenTag
+} from './util'
 
 import modules from './modules/index'
 import directives from './directives/index'
 import { genStaticKeys } from '../../util'
-import { isUnaryTag, canBeLeftOpenTag } from './util'
 
 export const baseOptions: CompilerOptions = {
   expectHTML: true,
