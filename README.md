@@ -14,6 +14,7 @@ This will allow to write React components in a Single Component File, similar to
     <div>{{ message }}</div>
   </template>
   <input :value="state.message" @change="updateMessage">
+  <button @click="toggleMessage">toggle message</button>
 </template>
 
 <script>
@@ -25,6 +26,11 @@ This will allow to write React components in a Single Component File, similar to
     methods: {
       updateMessage(event) {
         this.setState({ message: event.target.value })
+      },
+      toggleMessage() {
+        this.setState((prevState) => ({
+          isVisible: !prevState.isVisible
+        }))
       }
     }
   }
