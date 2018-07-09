@@ -231,7 +231,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
   }
   // attributes
   if (el.attrs || el.props) {
-    data += `attrs:{${genProps(el.attrs)},${genProps(el.props)}},`
+    data += `props:{${genProps(el.attrs)},${genProps(el.props)}},`
   }
   // event handlers
   if (el.events) {

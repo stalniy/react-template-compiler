@@ -97,3 +97,25 @@ export const isNonPhrasingTag = makeMap(
   'optgroup,option,param,rp,rt,source,style,summary,tbody,td,tfoot,th,thead,' +
   'title,tr,track'
 )
+
+/**
+ * Generate a static keys string from compiler modules.
+ */
+export function genStaticKeys (modules: Array<ModuleOptions>): string {
+  return modules.reduce((keys, m) => {
+    return keys.concat(m.staticKeys || [])
+  }, []).join(',')
+}
+
+/**
+ * Merge an Array of Objects into a single Object.
+ */
+export function toObject (arr: Array<any>): Object {
+  const res = {}
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i]) {
+      extend(res, arr[i])
+    }
+  }
+  return res
+}
