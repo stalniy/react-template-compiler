@@ -2,7 +2,23 @@
 
 Compiles Vue templates into React render function
 
-This will allow to write React components in a Single Component File, similar to how we do for Vue
+## Motivation
+
+* Easy syntax that's similar to HTML, supported by most IDEs
+* Utilize Web Components standard (single component file, slots, CSS4) knowledge instead of custom solutions
+* Clear separation of presentation and logic - zero HTML in component logic
+* Declarative coding ensures that the HTML that you write and the HTML you inspect look nearly identical.
+* Performance: exclude static trees from diffing algorithms
+* Reduce boilerplate when working with forms
+* Reduce boilerplate passing event handlers and binding methods to `this`
+
+## Why not use JSX?
+
+Some love JSX, some don't. I don't. More specifically, it seems that JSX is only a good fit for components with very little HTML inside.
+
+## Value
+
+Compiler allows to write React components in a Single Component File, similar to how it's done for Vue
 
 ```html
 <template>
