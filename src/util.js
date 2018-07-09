@@ -44,6 +44,13 @@ export const camelize = cached((str: string): string => {
 })
 
 /**
+ * Capitalize a string.
+ */
+export const capitalize = cached((str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+})
+
+/**
  * Perform no operation.
  * Stubbing args to make Flow happy without leaving useless transpiled code
  * with ...rest (https://flow.org/blog/2017/05/07/Strict-Function-Call-Arity/)

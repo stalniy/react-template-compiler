@@ -1,5 +1,7 @@
 /* @flow */
 
+import { capitalize } from '../util'
+
 const fnExpRE = /^([\w$_]+|\([^)]*?\))\s*=>|^function\s*\(/
 const simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['[^']*?']|\["[^"]*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*$/
 
@@ -54,11 +56,11 @@ export function genHandlers (
   isNative: boolean,
   warn: Function
 ): string {
-  let res = 'on:{'
+  let res = ''
   for (const name in events) {
-    res += `"${name}":${genHandler(name, events[name])},`
+    res += `"on${capitalize(name)}":${genHandler(name, events[name])},`
   }
-  return res.slice(0, -1) + '}'
+  return res.slice(0, -1)
 }
 
 // Generate handler code with binding params on Weex
@@ -88,7 +90,7 @@ function genHandler (
   }
 
   if (Array.isArray(handler)) {
-    return `[${handler.map(handler => genHandler(name, handler)).join(',')}]`
+    return `_p(${handler.map(handler => genHandler(name, handler)).join(',')})`
   }
 
   const isMethodPath = simplePathRE.test(handler.value)

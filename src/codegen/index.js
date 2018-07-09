@@ -192,7 +192,7 @@ export function genFor (
   }
 
   el.forProcessed = true // avoid recursion
-  return `...${altHelper || '_l'}((${exp}),` +
+  return `${altHelper || '_l'}((${exp}),` +
     `function(${alias}${iterator1}${iterator2}){` +
       `return ${(altGen || genElement)(el, state)}` +
     '})'
@@ -230,8 +230,11 @@ export function genData (el: ASTElement, state: CodegenState): string {
     data += state.dataGenFns[i](el)
   }
   // attributes
-  if (el.attrs || el.props) {
-    data += `props:{${genProps(el.attrs)},${genProps(el.props)}},`
+  if (el.attrs) {
+    data += `attrs:{${genProps(el.attrs)}},`
+  }
+  if (el.props) {
+    data += `${genProps(el.props)},`
   }
   // event handlers
   if (el.events) {
@@ -393,8 +396,9 @@ export function genChildren (
       ? getNormalizationType(children, state.maybeComponent)
       : 0
     const gen = altGenNode || genNode
+
     return children.map(c => gen(c, state)).join(',')
-    // normalizationType ? `,${normalizationType}` : ''
+      + (normalizationType ? `,${normalizationType}` : '')
   }
 }
 

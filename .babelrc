@@ -2,7 +2,9 @@
   "plugins": [
     "syntax-flow",
     "transform-flow-strip-types",
-    "external-helpers"
+    ['inline-replace-variables', {
+      "__WEEX__": false
+    }]
   ],
   "presets": [
     ["env", {
@@ -10,5 +12,24 @@
       "loose": true,
       "browsers": ["last 2 versions", "safari >= 7"]
     }]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "modules": "commonjs",
+          "loose": true,
+          "browsers": ["last 2 versions", "safari >= 7"]
+        }]
+      ],
+      "plugins": [
+        "syntax-flow",
+        "transform-flow-strip-types",
+        "transform-async-to-generator",
+        ['inline-replace-variables', {
+          "__WEEX__": false
+        }]
+      ]
+    }
+  }
 }

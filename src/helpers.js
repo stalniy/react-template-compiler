@@ -68,16 +68,16 @@ export function addHandler (
   // check capture modifier
   if (modifiers.capture) {
     delete modifiers.capture
-    name = '!' + name // mark the event as captured
+    name = `${name}Capture` // mark the event as captured
   }
   if (modifiers.once) {
     delete modifiers.once
-    name = '~' + name // mark the event as once
+    name = `${name}Once` // mark the event as once
   }
   /* istanbul ignore if */
   if (modifiers.passive) {
     delete modifiers.passive
-    name = '&' + name // mark the event as passive
+    name = `${name}Passive` // mark the event as passive
   }
 
   // normalize click.right and click.middle since they don't actually fire
@@ -92,13 +92,7 @@ export function addHandler (
     }
   }
 
-  let events
-  if (modifiers.native) {
-    delete modifiers.native
-    events = el.nativeEvents || (el.nativeEvents = {})
-  } else {
-    events = el.events || (el.events = {})
-  }
+  const events = el.events || (el.events = {})
 
   const newHandler: any = {
     value: value.trim()
