@@ -1,0 +1,29 @@
+{
+  "name": "react-template-compiler",
+  "version": "0.0.1",
+  "description": "Compile Vue templates into React render function",
+  "main": "dist/index.umd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stalniy/react-template-compiler.git"
+  },
+  "keywords": [
+    "vue",
+    "react",
+    "template-compiler",
+    "render",
+    "function"
+  ],
+  "author": "Sergii Stotskyi <sergiy.stotskiy@freaksidea.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stalniy/react-template-compiler/issues"
+  },
+  "homepage": "https://github.com/stalniy/react-template-compiler#readme",
+  "dependencies": {
+    "he": "^1.1.1"
+  }
+}
