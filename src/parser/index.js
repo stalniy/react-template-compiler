@@ -113,6 +113,22 @@ export function parse (
     }
   }
 
+  function createFragment (children = []) {
+    const fragment = createASTElement('template', [], currentParent)
+    fragment.children = children
+    fragment.isFragment = true
+    children.forEach(child => child.parent = fragment)
+    return fragment
+  }
+
+  function wrapInFragment (el) {
+    if (el.tag === 'slot' || el.tag === 'template' || el.attrsMap.hasOwnProperty('r-for')) {
+      return createFragment([el])
+    }
+
+    return el
+  }
+
   parseHTML(template, {
     warn,
     expectHTML: options.expectHTML,
@@ -173,7 +189,7 @@ export function parse (
 
       // tree management
       if (!root) {
-        root = element
+        root = wrapInFragment(element)
       } else if (!stack.length) {
         // allow root elements with r-if, r-else-if and r-else
         if (root.if && (element.elseif || element.else)) {
@@ -183,10 +199,7 @@ export function parse (
           })
         } else {
           if (!root.isFragment) {
-            const prevRoot = root
-            root = createASTElement('template', [], currentParent)
-            root.children.push(prevRoot)
-            root.isFragment = true
+            root = createFragment([root])
           }
 
           root.children.push(element)
@@ -253,6 +266,7 @@ export function parse (
         ? isTextTag(currentParent) ? text : decodeHTMLCached(text)
         // only preserve whitespace if its not right after a starting tag
         : preserveWhitespace && children.length ? ' ' : ''
+
       if (text) {
         let res
         if (!inVPre && text !== ' ' && (res = parseText(text, delimiters))) {

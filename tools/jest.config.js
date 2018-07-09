@@ -14,5 +14,6 @@ module.exports = {
   ],
   transform: {
     '^.+\\.jsx?$': 'babel-jest'
-  }
+  },
+  setupTestFrameworkScriptFile: `${__dirname}/../spec/spec-helper.js`
 }
