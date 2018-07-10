@@ -146,10 +146,10 @@ function genDefaultModel (
   const { lazy, number, trim } = modifiers || {}
   const needCompositionGuard = !lazy && type !== 'range'
   const event = lazy
-    ? 'change'
+    ? 'blur'
     : type === 'range'
       ? RANGE_TOKEN
-      : 'input'
+      : 'change'
 
   let valueExpression = '$event.target.value'
   if (trim) {

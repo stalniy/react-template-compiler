@@ -63,7 +63,7 @@ describe('compile options', () => {
       ]
     })
 
-    expect(render).toBe(`with(this){return _c('div',_c('validate',{props:{field:"field1",groups:["group1","group2"],validators:[{"name":"required","rule":""},{"name":"max","rule":"8"}],result:{"dirty":false,"required":null,"max":null},child:_c('input',{directives:[{name:"model",rawName:"r-model",value:(msg),expression:"msg"}],validate:{"field":"field1","groups":["group1","group2"]},validators:[{"name":"required","rule":""},{"name":"max","rule":"8"}],attrs:{"type":"text"},"value":(msg),"onInput":function($event){if($event.target.composing)return;msg=$event.target.value}})}}))}`)
+    expect(render).toBe(`with(this){return _c('div',_c('validate',{props:{field:"field1",groups:["group1","group2"],validators:[{"name":"required","rule":""},{"name":"max","rule":"8"}],result:{"dirty":false,"required":null,"max":null},child:_c('input',{directives:[{name:"model",rawName:"r-model",value:(msg),expression:"msg"}],validate:{"field":"field1","groups":["group1","group2"]},validators:[{"name":"required","rule":""},{"name":"max","rule":"8"}],attrs:{"type":"text"},"value":(msg),"onChange":function($event){if($event.target.composing)return;msg=$event.target.value}})}}))}`)
     expect(staticRenderFns).toEqual([])
     expect(errors).toEqual([])
   })
