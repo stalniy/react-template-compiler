@@ -601,5 +601,12 @@ describe('codegen', () => {
       { isReservedTag }
     )
   })
+
+  it('convert r-model to `:value` binding and `@input` event', () => {
+    assertCodegen(
+      '<input r-model="state.value">',
+      `with(this){return _c('input',{directives:[{name:"model",rawName:"r-model",value:(state.value),expression:"state.value"}],"value":(state.value),"onInput":function($event){if($event.target.composing)return;$set(state, ["value"], $event.target.value)}})}`
+    )
+  })
 })
 /* eslint-enable quotes */

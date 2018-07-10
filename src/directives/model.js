@@ -38,10 +38,12 @@ export function genAssignmentCode (
   assignment: string
 ): string {
   const res = parseModel(value)
-  if (res.key === null) {
+  if (res.tokens.length === 1) {
     return `${value}=${assignment}`
+  } else if (value.startsWith('state.')) {
+    return `$set(state, [${res.tokens.slice(1).join(',')}], ${assignment})`
   } else {
-    return `$set(${res.exp}, ${res.key}, ${assignment})`
+    return `$set(${res.exp}, ${res.tokens[res.tokens.length - 1]}, ${assignment})`
   }
 }
 
@@ -60,89 +62,67 @@ export function genAssignmentCode (
  *
  */
 
-let len, str, chr, index, expressionPos, expressionEndPos
-
 type ModelParseResult = {
   exp: string,
-  key: string | null
+  tokens: [string]
 }
 
 export function parseModel (val: string): ModelParseResult {
-  // Fix https://github.com/vuejs/vue/pull/7730
-  // allow r-model="obj.val " (trailing whitespace)
-  val = val.trim()
-  len = val.length
+  const value = val.trim()
 
-  if (val.indexOf('[') < 0 || val.lastIndexOf(']') < len - 1) {
-    index = val.lastIndexOf('.')
-    if (index > -1) {
-      return {
-        exp: val.slice(0, index),
-        key: '"' + val.slice(index + 1) + '"'
+  if (!value.includes('[') && !value.includes(']') && !value.includes('.')) {
+    return {
+      exp: value,
+      tokens: [value]
+    }
+  }
+
+  const tokens = []
+  let start = 0
+  let depth = 0
+
+  for (let i = 0, len = value.length; i < len; i++) {
+    if (value[i] === '.') {
+      if (value[i - 1] !== ']') {
+        tokens.push(`"${value.slice(start, i)}"`)
       }
-    } else {
-      return {
-        exp: val,
-        key: null
+
+      start = i + 1
+    } else if (value[i] === '[') {
+      if (depth === 0) {
+        if (start !== i) {
+          const quote = value[i - 1] === ']' ? '' : '"'
+          tokens.push(quote + value.slice(start, i) + quote)
+        }
+
+        start = i + 1
+      }
+
+      depth++
+    } else if (value[i] === ']') {
+      depth--
+
+      if (depth === 0) {
+        tokens.push(value.slice(start, i))
+        start = i + 1
       }
     }
   }
 
-  str = val
-  index = expressionPos = expressionEndPos = 0
+  if (start < value.length) {
+    tokens.push(`"${value.slice(start)}"`)
+  }
 
-  while (!eof()) {
-    chr = next()
-    /* istanbul ignore if */
-    if (isStringStart(chr)) {
-      parseString(chr)
-    } else if (chr === 0x5B) {
-      parseBracket(chr)
-    }
+  let lastTokenLength = tokens[tokens.length - 1].length
+
+  if (value.endsWith(']')) {
+    lastTokenLength += 2
+  } else {
+    lastTokenLength--
   }
 
   return {
-    exp: val.slice(0, expressionPos),
-    key: val.slice(expressionPos + 1, expressionEndPos)
-  }
-}
-
-function next (): number {
-  return str.charCodeAt(++index)
-}
-
-function eof (): boolean {
-  return index >= len
-}
-
-function isStringStart (chr: number): boolean {
-  return chr === 0x22 || chr === 0x27
-}
-
-function parseBracket (chr: number): void {
-  let inBracket = 1
-  expressionPos = index
-  while (!eof()) {
-    chr = next()
-    if (isStringStart(chr)) {
-      parseString(chr)
-      continue
-    }
-    if (chr === 0x5B) inBracket++
-    if (chr === 0x5D) inBracket--
-    if (inBracket === 0) {
-      expressionEndPos = index
-      break
-    }
-  }
-}
-
-function parseString (chr: number): void {
-  const stringQuote = chr
-  while (!eof()) {
-    chr = next()
-    if (chr === stringQuote) {
-      break
-    }
+    tokens,
+    exp: value.slice(0, -lastTokenLength)
   }
 }
