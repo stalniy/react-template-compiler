@@ -1,4 +1,4 @@
-import { parse } from '../../src/parser/index'
+import { parse } from '../../src/parser'
 import { optimize } from '../../src/optimizer'
 import { generate } from '../../src/codegen'
 import { extend } from '../../src/util'
