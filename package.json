@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/stalniy/react-template-compiler#readme",
   "dependencies": {
+    "de-indent": "^1.0.2",
     "he": "^1.1.1"
   },
   "devDependencies": {

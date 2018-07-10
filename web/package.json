@@ -1,0 +1,5 @@
+{
+  "name": "web",
+  "main": "../dist/web.cjs.js",
+  "es2015": "../dist/web.es.js"
+}

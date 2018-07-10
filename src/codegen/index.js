@@ -397,8 +397,8 @@ export function genChildren (
       : 0
     const gen = altGenNode || genNode
 
-    return children.map(c => gen(c, state)).join(',')
-      + (normalizationType ? `,${normalizationType}` : '')
+    return children.map(c => gen(c, state)).join(',') +
+      (normalizationType ? `,${normalizationType}` : '')
   }
 }
 
