@@ -1,6 +1,6 @@
 {
   "name": "react-template-compiler",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Compile Vue templates into React render function",
   "main": "dist/index.cjs.js",
   "es2015": "dist/index.es.js",
