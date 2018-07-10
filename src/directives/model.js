@@ -40,8 +40,8 @@ export function genAssignmentCode (
   const res = parseModel(value)
   if (res.tokens.length === 1) {
     return `${value}=${assignment}`
-  } else if (value.startsWith('state.')) {
-    return `$set(state, [${res.tokens.slice(1).join(',')}], ${assignment})`
+  } else if (res.tokens[0] === 'state') {
+    return `$set([${res.tokens.slice(1).join(',')}], ${assignment})`
   } else {
     return `$set(${res.exp}, ${res.tokens[res.tokens.length - 1]}, ${assignment})`
   }

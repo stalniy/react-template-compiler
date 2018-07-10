@@ -59,7 +59,7 @@ Compiler allows to write React components in a Single Component File, similar to
 </style>
 ```
 
-**Under development**, see [Issues](https://github.com/stalniy/react-template-compiler/issues) to check the progress
+See [react-webpack-loader](https://github.com/stalniy/react-webpack-loader) for details
 
 **Current Limitations**:
 * React doesn't support `passive` handlers thus I will either skip their support in the first release or find a way how to add them in runtime
