@@ -90,6 +90,8 @@ export function genElement (el: ASTElement, state: CodegenState): string {
 // hoist static sub-trees out
 function genStatic (el: ASTElement, state: CodegenState): string {
   el.staticProcessed = true
+  el.key = el.key || '"_s_' + state.staticRenderFns.length + '"'
+  el.plain = false
   state.staticRenderFns.push(`with(this){return ${genElement(el, state)}}`)
   return `_m(${
     state.staticRenderFns.length - 1
@@ -119,7 +121,9 @@ function genOnce (el: ASTElement, state: CodegenState): string {
       )
       return genElement(el, state)
     }
-    return `_o(${genElement(el, state)},${state.onceId++},${key})`
+    el.key = el.key || `"_o${(state.onceId++)}_"${key ? ` + ${key}` : ''}`
+    el.plain = false
+    return genElement(el, state)
   } else {
     return genStatic(el, state)
   }
