@@ -121,9 +121,9 @@ function genOnce (el: ASTElement, state: CodegenState): string {
       )
       return genElement(el, state)
     }
-    el.key = el.key || `"_o${(state.onceId++)}_"${key ? ` + ${key}` : ''}`
     el.plain = false
-    return genElement(el, state)
+    el.key = el.key || `"_o${state.onceId++}"${key ? ' + ' + key : ''}`
+    return `_o(${genElement(el, state)})`
   } else {
     return genStatic(el, state)
   }

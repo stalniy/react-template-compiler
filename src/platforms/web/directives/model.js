@@ -57,9 +57,6 @@ export default function model (
       'wrap a library dedicated for that purpose inside a custom component.'
     )
   }
-
-  // ensure runtime directive metadata
-  return true
 }
 
 function genCheckboxModel (
