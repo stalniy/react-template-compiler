@@ -86,7 +86,7 @@ function genHandler (
   handler: ASTElementHandler | Array<ASTElementHandler>
 ): string {
   if (!handler) {
-    return 'function(){}'
+    return '_nh'
   }
 
   if (Array.isArray(handler)) {

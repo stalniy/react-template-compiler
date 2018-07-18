@@ -216,10 +216,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
   }
   // ref
   if (el.ref) {
-    data += `ref:${el.ref},`
-  }
-  if (el.refInFor) {
-    data += `refInFor:true,`
+    data += `ref:_rr(${el.ref}${el.refInFor ? ',' + el.refInFor : ''}),`
   }
   // pre
   if (el.pre) {
@@ -240,6 +237,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
   if (el.props) {
     data += `${genProps(el.props)},`
   }
+
   // event handlers
   if (el.events) {
     data += `${genHandlers(el.events, false, state.warn)},`

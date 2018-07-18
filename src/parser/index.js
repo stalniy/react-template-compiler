@@ -346,8 +346,12 @@ function processKey (el) {
 function processRef (el) {
   const ref = getBindingAttr(el, 'ref')
   if (ref) {
+    const vfor = findForInParents(el)
     el.ref = ref
-    el.refInFor = checkInFor(el)
+
+    if (vfor) {
+      el.refInFor = vfor.iterator2 = '$index'
+    }
   }
 }
 
@@ -598,15 +602,12 @@ function processAttrs (el) {
   }
 }
 
-function checkInFor (el: ASTElement): boolean {
+function findForInParents (el: ASTElement): ASTElement {
   let parent = el
-  while (parent) {
-    if (parent.for !== undefined) {
-      return true
-    }
+  while (parent && !parent.for) {
     parent = parent.parent
   }
-  return false
+  return parent
 }
 
 function parseModifiers (name: string): Object | void {
