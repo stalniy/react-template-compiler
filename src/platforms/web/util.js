@@ -1,6 +1,6 @@
 /* @flow */
 
-import { makeMap, cached, extend, toObject, inBrowser } from '../../util'
+import { makeMap, cached, extend, toObject, inBrowser, camelize } from '../../util'
 
 export const isUnaryTag = makeMap(
   'area,base,br,col,embed,frame,hr,img,input,isindex,keygen,' +
@@ -30,21 +30,11 @@ export const parseStyleText = cached(function (cssText) {
   cssText.split(listDelimiter).forEach(function (item) {
     if (item) {
       var tmp = item.split(propertyDelimiter)
-      tmp.length > 1 && (res[tmp[0].trim()] = tmp[1].trim())
+      tmp.length > 1 && (res[camelize(tmp[0].trim())] = tmp[1].trim())
     }
   })
   return res
 })
-
-// merge static and dynamic style data on the same vnode
-function normalizeStyleData (data: VNodeData): ?Object {
-  const style = normalizeStyleBinding(data.style)
-  // static style is pre-processed into an object during compilation
-  // and is always a fresh object, so it's safe to merge into it
-  return data.staticStyle
-    ? extend(data.staticStyle, style)
-    : style
-}
 
 // normalize possible array / string values into Object
 export function normalizeStyleBinding (bindingStyle: any): ?Object {

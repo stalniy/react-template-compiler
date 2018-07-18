@@ -35,11 +35,14 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
 
 function genData (el: ASTElement): string {
   let data = ''
-  if (el.staticStyle) {
-    data += `staticStyle:${el.staticStyle},`
-  }
-  if (el.styleBinding) {
-    data += `style:(${el.styleBinding}),`
+  if (el.staticStyle && el.styleBinding) {
+    if (el.styleBinding[0] === '{') {
+      data += `style:({${el.staticStyle.slice(1, -1)},${el.styleBinding.slice(1, -1)}}),`
+    } else {
+      data += `style:_rs(${el.staticStyle}, ${el.styleBinding}),`
+    }
+  } else if (el.styleBinding || el.staticStyle) {
+    data += `style:(${el.styleBinding ? '_rs(' + el.styleBinding + ')' : e.staticStyle}),`
   }
   return data
 }

@@ -226,6 +226,22 @@ describe('codegen', () => {
       '<p :style="error">hello world</p>',
       `with(this){return _c('p',{style:(error)},"hello world")}`
     )
+    assertCodegen(
+      '<p :style="{ backgroundColor: color }">hello world</p>',
+      `with(this){return _c('p',{style:({ backgroundColor: color })},"hello world")}`
+    )
+    assertCodegen(
+      '<p style="border-left: 1px solid red" :style="{ backgroundColor: color }">hello world</p>',
+      `with(this){return _c('p',{style:({"borderLeft":"1px solid red", backgroundColor: color })},"hello world")}`
+    )
+    assertCodegen(
+      '<p style="border-left: 1px solid red" :style="styles">hello world</p>',
+      `with(this){return _c('p',{style:_rs({"borderLeft":"1px solid red"}, styles)},"hello world")}`
+    )
+    assertCodegen(
+      '<p style="border-left: 1px solid red" :style="[styles, { backgroundColor: color }]">hello world</p>',
+      `with(this){return _c('p',{style:_rs({"borderLeft":"1px solid red"}, [styles, { backgroundColor: color }])},"hello world")}`
+    )
   })
 
   it('generate r-show directive', () => {
