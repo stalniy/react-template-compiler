@@ -32,11 +32,12 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
 
 function genData (el: ASTElement): string {
   let data = ''
-  if (el.staticClass) {
-    data += `staticClass:${el.staticClass},`
-  }
-  if (el.classBinding) {
-    data += `class:${el.classBinding},`
+  const attrName = el.tag.includes('-') ? 'class' : 'className'
+
+  if (el.staticClass && el.classBinding) {
+    data += `${attrName}:_rc(${el.classBinding},${el.staticClass}),`
+  } else if (el.staticClass || el.classBinding) {
+    data += `${attrName}:${el.classBinding ? '_rc(' + el.classBinding + ')' : el.staticClass},`
   }
   return data
 }
