@@ -39,7 +39,7 @@ function genData (el: ASTElement): string {
     if (el.styleBinding[0] === '{') {
       data += `style:({${el.staticStyle.slice(1, -1)},${el.styleBinding.slice(1, -1)}}),`
     } else {
-      data += `style:_rs(${el.staticStyle}, ${el.styleBinding}),`
+      data += `style:_rs(${el.styleBinding}, ${el.staticStyle}),`
     }
   } else if (el.styleBinding || el.staticStyle) {
     data += `style:(${el.styleBinding ? '_rs(' + el.styleBinding + ')' : e.staticStyle}),`
