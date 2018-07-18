@@ -90,7 +90,7 @@ function genHandler (
   }
 
   if (Array.isArray(handler)) {
-    return `_p(${handler.map(handler => genHandler(name, handler)).join(',')})`
+    return `_p([${handler.map(handler => genHandler(name, handler)).join(',')}])`
   }
 
   const isMethodPath = simplePathRE.test(handler.value)

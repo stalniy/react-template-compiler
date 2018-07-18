@@ -242,9 +242,6 @@ export function genData (el: ASTElement, state: CodegenState): string {
   if (el.events) {
     data += `${genHandlers(el.events, false, state.warn)},`
   }
-  if (el.nativeEvents) {
-    data += `${genHandlers(el.nativeEvents, true, state.warn)},`
-  }
   // slot target
   // only for non-scoped slots
   if (el.slotTarget && !el.slotScope) {
@@ -275,10 +272,6 @@ export function genData (el: ASTElement, state: CodegenState): string {
   // r-bind data wrap
   if (el.wrapData) {
     data = el.wrapData(data)
-  }
-  // r-on data wrap
-  if (el.wrapListeners) {
-    data = el.wrapListeners(data)
   }
   return data
 }
