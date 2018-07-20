@@ -4,7 +4,7 @@ import { emptyObject } from './util'
 import { parseFilters } from './parser/filter-parser'
 
 export function baseWarn (msg: string) {
-  console.error(`[Vue compiler]: ${msg}`)
+  console.error(`[React compiler]: ${msg}`)
 }
 
 export function pluckModuleFunction<F: Function> (

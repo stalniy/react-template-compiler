@@ -231,21 +231,13 @@ export function genData (el: ASTElement, state: CodegenState): string {
     data += state.dataGenFns[i](el)
   }
   // attributes
-  if (el.attrs) {
-    data += `attrs:{${genProps(el.attrs)}},`
-  }
-  if (el.props) {
-    data += `${genProps(el.props)},`
+  if (el.attrs || el.props) {
+    data += `${genProps([].concat(el.attrs || [], el.props || []))},`
   }
 
   // event handlers
   if (el.events) {
     data += `${genHandlers(el.events, false, state.warn)},`
-  }
-  // slot target
-  // only for non-scoped slots
-  if (el.slotTarget && !el.slotScope) {
-    data += `slot:${el.slotTarget},`
   }
   // scoped slots
   if (el.scopedSlots) {
