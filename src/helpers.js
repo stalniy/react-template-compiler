@@ -70,10 +70,6 @@ export function addHandler (
     delete modifiers.capture
     name = `${name}Capture` // mark the event as captured
   }
-  if (modifiers.once) {
-    delete modifiers.once
-    name = `${name}Once` // mark the event as once
-  }
   /* istanbul ignore if */
   if (modifiers.passive) {
     delete modifiers.passive

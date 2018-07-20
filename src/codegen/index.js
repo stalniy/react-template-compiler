@@ -28,6 +28,7 @@ export class CodegenState {
     const isReservedTag = options.isReservedTag || no
     this.maybeComponent = (el: ASTElement) => !isReservedTag(el.tag)
     this.onceId = 0
+    this.onceHandlerId = { current: 0, next() { return ++this.current } }
     this.staticRenderFns = []
   }
 }
@@ -237,7 +238,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
 
   // event handlers
   if (el.events) {
-    data += `${genHandlers(el.events, false, state.warn)},`
+    data += `${genHandlers(el.events, false, state)},`
   }
   // scoped slots
   if (el.scopedSlots) {

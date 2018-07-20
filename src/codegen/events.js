@@ -33,10 +33,7 @@ const keyNames: { [key: string]: string | Array<string> } = {
   'delete': ['Backspace', 'Delete']
 }
 
-// #4868: modifiers that prevent the execution of the listener
-// need to explicitly return null so that we can determine whether to remove
-// the listener for .once
-const genGuard = condition => `if(${condition})return null;`
+const genGuard = condition => `if(${condition})return;`
 
 const modifierCode: { [key: string]: string } = {
   stop: '$event.stopPropagation();',
@@ -54,11 +51,11 @@ const modifierCode: { [key: string]: string } = {
 export function genHandlers (
   events: ASTElementHandlers,
   isNative: boolean,
-  warn: Function
+  state: CodegenState
 ): string {
   let res = ''
   for (const name in events) {
-    res += `"on${capitalize(name)}":${genHandler(name, events[name])},`
+    res += `"on${capitalize(name)}":${genHandler(name, events[name], state)},`
   }
   return res.slice(0, -1)
 }
@@ -83,14 +80,15 @@ function genWeexHandler (params: Array<any>, handlerCode: string) {
 
 function genHandler (
   name: string,
-  handler: ASTElementHandler | Array<ASTElementHandler>
+  handler: ASTElementHandler | Array<ASTElementHandler>,
+  state: CodegenState
 ): string {
   if (!handler) {
     return '_nh'
   }
 
   if (Array.isArray(handler)) {
-    return `_p([${handler.map(handler => genHandler(name, handler)).join(',')}])`
+    return `_p([${handler.map(handler => genHandler(name, handler, state)).join(',')}])`
   }
 
   const isMethodPath = simplePathRE.test(handler.value)
@@ -109,6 +107,8 @@ function genHandler (
     let code = ''
     let genModifierCode = ''
     const keys = []
+    let onceCondition
+
     for (const key in handler.modifiers) {
       if (modifierCode[key]) {
         genModifierCode += modifierCode[key]
@@ -124,6 +124,9 @@ function genHandler (
             .map(keyModifier => `$event.${keyModifier}Key`)
             .join('||')
         )
+      } else if (key === 'once') {
+        onceCondition = `_cc.o${state.onceHandlerId.next()}`
+        genModifierCode += `\n${onceCondition} = true;\n`
       } else {
         keys.push(key)
       }
@@ -144,7 +147,10 @@ function genHandler (
     if (__WEEX__ && handler.params) {
       return genWeexHandler(handler.params, code + handlerCode)
     }
-    return `function($event){${code}${handlerCode}}`
+
+    const expr = `function($event){${code}${handlerCode}}`
+
+    return onceCondition ? `${onceCondition} ? null : (${expr})` : expr
   }
 }
 
